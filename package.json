@@ -1,5 +1,6 @@
 {
   "name": "@nw55/common",
+  "description": "NW55 Common JS/TS Library",
   "version": "0.1.0",
   "main": "dist/index.js",
   "module": "lib/index.js",
@@ -7,12 +8,13 @@
   "author": "Niklas Werner (nw55) <nw55@outlook.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -b src src/tsconfig.commonjs.json"
+    "build": "tsc -b src src/tsconfig.commonjs.json",
+    "watch": "tsc -b -w src"
   },
   "files": [
-    "src",
-    "dist",
-    "lib"
+    "/src",
+    "/dist",
+    "/lib"
   ],
   "private": true,
   "devDependencies": {
