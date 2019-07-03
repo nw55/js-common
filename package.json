@@ -1,0 +1,21 @@
+{
+  "name": "@nw55/common",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "author": "Niklas Werner (nw55) <nw55@outlook.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -b src src/tsconfig.commonjs.json"
+  },
+  "files": [
+    "src",
+    "dist",
+    "lib"
+  ],
+  "private": true,
+  "devDependencies": {
+    "typescript": "^3.5.2"
+  }
+}
