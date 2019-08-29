@@ -5,11 +5,14 @@
         "moduleResolution": "node",
         "strict": true,
         "sourceMap": true,
-        "declaration": true,
         "lib": [
             "es2017"
         ],
         "outDir": "../lib",
-        "types": []
-    }
+        "types": [],
+        "rootDir": "./src"
+    },
+    "include": [
+        "src"
+    ]
 }

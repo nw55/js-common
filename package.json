@@ -8,13 +8,17 @@
   "author": "Niklas Werner (nw55) <nw55@outlook.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -b src src/tsconfig.commonjs.json",
-    "watch": "tsc -b -w src"
+    "build:esm": "tsc --outDir lib",
+    "build:cjs": "tsc --outDir dist --module commonjs",
+    "build:dts": "tsc --outFile lib/index.js --declaration --module umd --emitDeclarationOnly && node fix-dts-bundle.js @nw55/common lib/index.d.ts",
+    "build": "npm run-script build:esm && npm run-script build:cjs && npm run-script build:dts",
+    "watch": "tsc --watch --noEmit"
   },
   "files": [
     "/src",
     "/dist",
-    "/lib"
+    "/lib",
+    "/tsconfig.json"
   ],
   "private": true,
   "devDependencies": {
