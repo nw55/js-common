@@ -8,11 +8,11 @@
   "author": "Niklas Werner (nw55) <nw55@outlook.com>",
   "license": "MIT",
   "scripts": {
-    "build:esm": "tsc --outDir lib",
-    "build:cjs": "tsc --outDir dist --module commonjs",
-    "build:dts": "tsc --outFile lib/index.js --declaration --module umd --emitDeclarationOnly && node fix-dts-bundle.js @nw55/common lib/index.d.ts",
+    "build:esm": "tsc -p tsconfig.prod.json --outDir lib",
+    "build:cjs": "tsc -p tsconfig.prod.json --outDir dist --module commonjs",
+    "build:dts": "tsc -p tsconfig.prod.json --outFile lib/index.js --declaration --module umd --emitDeclarationOnly && node fix-dts-bundle.js @nw55/common lib/index.d.ts",
     "build": "npm run-script build:esm && npm run-script build:cjs && npm run-script build:dts",
-    "watch": "tsc --watch --noEmit"
+    "watch": "tsc --watch"
   },
   "files": [
     "/src",
@@ -22,6 +22,6 @@
   ],
   "private": true,
   "devDependencies": {
-    "typescript": "^3.5.2"
+    "typescript": "^3.6.3"
   }
 }
