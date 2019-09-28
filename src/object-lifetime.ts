@@ -18,14 +18,16 @@ export class LifetimeObject {
 
 type IterationCallback<T> = (obj: T) => boolean;
 
-export interface LifetimeManager<T extends LifetimeObject> {
+export interface ReadonlyLifetimeManager<T extends LifetimeObject> {
     readonly objectCount: number;
-
-    addObject: <U extends T>(obj: U) => U;
 
     forEachObject: (cb: IterationCallback<T>, removeDead?: boolean) => boolean;
 
     forEachLiveObject: (cb: IterationCallback<T>) => boolean;
+}
+
+export interface LifetimeManager<T extends LifetimeObject> extends ReadonlyLifetimeManager<T> {
+    addObject: <U extends T>(obj: U) => U;
 }
 
 export class DefaultLifetimeManager<T extends LifetimeObject> implements LifetimeManager<T> {
