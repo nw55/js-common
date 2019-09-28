@@ -205,6 +205,7 @@ export class Rect {
         return new Rect(left, top, right, bottom);
     }
 
+    // always returns false if one rect is empty
     intersects(rect: Rect) {
         let left = Math.max(this._left, rect._left);
         let right = Math.min(this._right, rect._right);
@@ -215,6 +216,11 @@ export class Rect {
         if (top >= bottom)
             return false;
         return true;
+    }
+
+    // can be used with empty rects
+    intersectsInclusive(rect: Rect) {
+        return this._left <= rect._right && this._right >= rect._left && this._top <= rect._bottom && this._bottom >= rect._top;
     }
 
     includes(rect: Rect) {
