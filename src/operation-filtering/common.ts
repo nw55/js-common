@@ -1,5 +1,8 @@
+import { OperationFilterHost } from './host';
+
+// TODO consider renaming operation filtering to object extensibility
+
 export type OperationFilterContextTypeMap<TMap> = {
-    // [K in keyof TMap]: Extract<TMap[K], OperationFilterContext>;
     [K in keyof TMap]: TMap[K] & OperationFilterContext;
 };
 
@@ -9,7 +12,7 @@ export interface OperationFilterContext {
     finalize(): void;
 }
 
-export interface OperationFilter<TMap, K extends keyof TMap> {
+export interface OperationFilter<TMap, K extends keyof TMap = keyof TMap> {
     readonly operation: K;
 
     readonly order: number;
@@ -21,9 +24,20 @@ export interface OperationFilterProvider<TMap> {
     getOperationFilters(): Iterable<OperationFilter<TMap, keyof TMap>>;
 }
 
+export const operationFilterHostSymbol = Symbol('operationFilterHost');
+
+export interface OperationFilteringObject<TMap> {
+    readonly [operationFilterHostSymbol]: OperationFilterHost<TMap> | null;
+}
+
 export abstract class DefaultOperationFilterContext implements OperationFilterContext {
     private _cancelled = false;
     private _executeResult = true;
+
+    protected _reset() {
+        this._cancelled = false;
+        this._executeResult = true;
+    }
 
     cancel(executeResult: boolean) {
         this._cancelled = true;

@@ -192,33 +192,44 @@ export class Rect {
     //     return this._union(x, y, x + 1, y + 1);
     // }
     union(rect: Rect) {
-        return this._union(rect.left, rect.top, rect.right, rect.bottom);
+        return this._union(rect._left, rect._top, rect._right, rect._bottom);
     }
 
     intersection(rect: Rect) {
-        let left = Math.max(this._left, rect.left);
-        let top = Math.max(this._top, rect.top);
-        let right = Math.min(this._right, rect.right);
-        let bottom = Math.min(this._bottom, rect.bottom);
+        let left = Math.max(this._left, rect._left);
+        let top = Math.max(this._top, rect._top);
+        let right = Math.min(this._right, rect._right);
+        let bottom = Math.min(this._bottom, rect._bottom);
         if (left >= right || top >= bottom)
             return Rect.zero;
         return new Rect(left, top, right, bottom);
     }
 
     intersects(rect: Rect) {
-        let left = Math.max(this._left, rect.left);
-        let right = Math.min(this._right, rect.right);
+        let left = Math.max(this._left, rect._left);
+        let right = Math.min(this._right, rect._right);
         if (left >= right)
             return false;
-        let top = Math.max(this._top, rect.top);
-        let bottom = Math.min(this._bottom, rect.bottom);
+        let top = Math.max(this._top, rect._top);
+        let bottom = Math.min(this._bottom, rect._bottom);
         if (top >= bottom)
             return false;
         return true;
     }
 
+    includes(rect: Rect) {
+        return rect._left >= this._left && rect._right <= this._right && rect._top >= this._top && rect._bottom <= this._bottom;
+    }
+
     contains(v: Vector2) {
         return v.x >= this._left && v.x < this._right && v.y >= this._top && v.y < this._bottom;
+    }
+
+    clamp(v: Vector2) {
+        return V(
+            Math.min(Math.max(this._left, v.x), this._right),
+            Math.min(Math.max(this._top, v.y), this._bottom)
+        );
     }
 
     // TODO PERF manual inline for less allocations

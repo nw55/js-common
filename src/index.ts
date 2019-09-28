@@ -1,7 +1,9 @@
 export * from './collections';
 export * from './math';
-export * from './operation-filtering';
 export * from './services';
+
+export * from './operation-filtering/common';
+export * from './operation-filtering/host';
 
 export * from './text/base64';
 export * from './text/utf8';
