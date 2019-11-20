@@ -97,7 +97,7 @@ export class Rect {
         return V(this._right - this._left, this._bottom - this._top);
     }
     get center() {
-        return V(this._left + (this._right - this._left) / 2, this._top + (this._bottom - this._top) / 2);
+        return V((this._left + this._right) / 2, (this._top + this._bottom) / 2);
     }
 
     get integerBounds() {

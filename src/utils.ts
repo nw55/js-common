@@ -65,3 +65,7 @@ export type Awaitable<T = void> = Promise<T> | T;
 export type Mutable<T> = {
     -readonly [P in keyof T]: T[P];
 };
+
+export interface CallbackIterable<T> {
+    forEach(cb: (value: T) => void): void;
+}

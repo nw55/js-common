@@ -24,7 +24,7 @@ export interface ServiceFactoryContext<TMap> {
 
 export type ServiceFactory<TMapIn, T> = (context: ServiceFactoryContext<TMapIn>) => Awaitable<T>;
 
-export type NamedServiceFactory<TMapOut, TMapIn, K extends keyof TMapOut> = (context: ServiceFactoryContext<TMapIn>) => Awaitable<TMapOut[K]>;
+export type NamedServiceFactory<TMapOut, TMapIn, K extends keyof TMapOut> = ServiceFactory<TMapIn, TMapOut[K]>;
 
 export type ServiceInfo = {
     type: ServiceType;
