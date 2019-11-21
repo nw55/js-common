@@ -17,7 +17,8 @@
   },
   "files": [
     "/dist",
-    "/lib"
+    "/lib",
+    "/src"
   ],
   "publishConfig": {
     "access": "public"
