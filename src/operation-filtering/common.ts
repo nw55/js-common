@@ -1,7 +1,5 @@
 import { OperationFilterHost } from './host';
 
-// TODO consider renaming operation filtering to object extensibility
-
 export type OperationFilterContextTypeMap<TMap> = {
     [K in keyof TMap]: TMap[K] & OperationFilterContext;
 };

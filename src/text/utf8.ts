@@ -1,6 +1,6 @@
 import { Log } from '../logging';
 
-// from nw55/ts-core
+// from old nw55/ts-core
 // TODO may need some more refactoring/cleanup
 
 const UTF16_LEAD_SURROGATE_IDENTIFIER = 0xD800; // high

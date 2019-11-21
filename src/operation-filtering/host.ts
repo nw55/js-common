@@ -13,7 +13,7 @@ const emptyList: readonly any[] = [];
 
 export class GlobalOperationFilterHost {
     private _typeFilterProviders = new MultiKeyMap<object, OperationFilterProvider<any>, OperationFilter<any>[]>();
-    private _typeFilters = new MultiKeyMap<object, PropertyKey, Set<OperationFilter<any>>>(); // TODO could use MultiKeyMultiMap here
+    private _typeFilters = new MultiKeyMap<object, PropertyKey, Set<OperationFilter<any>>>(); // TODO could use MultiKeyMultiMap here if it existed
     private _typeFilterLists = new MultiKeyMap<object, PropertyKey, OperationFilter<any>[]>();
     private _cleanTypes = new MultiKeySet<object, PropertyKey>();
     private _version = 0;
