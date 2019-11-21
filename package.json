@@ -13,13 +13,15 @@
     "build:dts": "tsc -p tsconfig.prod.json --outFile lib/index.js --declaration --module umd --emitDeclarationOnly && node fix-dts-bundle.js @nw55/common lib/index.d.ts",
     "build": "npm run build:esm && npm run build:cjs && npm run build:dts",
     "dev": "tsc --watch",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "files": [
     "/dist",
     "/lib"
   ],
-  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "typescript": "^3.6.3"
   }

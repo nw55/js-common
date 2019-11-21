@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "node"
+script: 'yarn build'
+deploy:
+  provider: npm
+  email: nw55@outlook.com
+  api_key:
+    secure: LOg9nq+F72KPMtvyPl34GJct8w3OkhmMVnrKLhSWKaoB4/GdeVof/D+OQpXChDbE5UcO4GAEETQ9ZXcaZTDGI2Poge4My7o62wPpbvM2WJ81LEuh4EDabBFn+feAV0HZL/0H1sNC4naZEU0WsoaAOAKsvzb5gES9ggiudUJNJSKt4Bg80tjxmXf4ARHoz2sKCdZjfzIs84UcMRUW8J5U45wKELUS+Lj5GEdNtOrOwDogx8F0TsAJiwYL8yk0NYB8OjLMa0sJOXvxrtBcwYj7PoNBWvY8Rh3KWMODSpalZ+ibP2M3ILiQuEoL2j6On4RxoPQ+s8nyTNxv8CqXFoKts8aKIBN90lr/BpiCXfAdN4ZbzMqrsRenKDjJguEZAyhCI0ey78hR0tVmj26PpPi7Cg2HpkhmhMSl2jBvrIDJiZ1iJznkii6tebqZLICFyc0yMCkiaOzalTLLo7AYscUMsB28zy7iIttXp1ZPc102wChFG9NzlXoOcc72C4FLIpC8VVAayo4E1qgPe7mDF6o7K/fk6RFHgZtX1PVuRgo2xOe/S2QmmYyM636sd9wcLYP4u5eglyCi9fkhUrec9kpWFx3utHk/xw3WTyCScIXba7it4uFTZ2kuPtONYli3VqR+rl8a06MbQKh/osyZVq3FncS+RVMzGN5Q+Y+3Xa5AQj8=
+  on:
+    tags: true
+    branch: master
+  skip_cleanup: true
