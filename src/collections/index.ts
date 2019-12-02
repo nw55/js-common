@@ -1,6 +1,5 @@
 export * from './bit-array';
 export * from './muli-key-map';
-export * from './multi-key-set';
 export * from './multi-map';
 export * from './pool';
 export * from './prototype-chain-map';
