@@ -1,19 +1,5 @@
-export class LifetimeObject {
-    private _lifetimeActive = true;
-
-    get lifetimeActive() {
-        return this._lifetimeActive;
-    }
-
-    endLifetime() {
-        let wasAlive = this._lifetimeActive;
-        this._lifetimeActive = false;
-        if (wasAlive)
-            this._onLifetimeEnd();
-    }
-
-    protected _onLifetimeEnd() {
-    }
+export interface LifetimeObject {
+    readonly lifetimeActive: boolean;
 }
 
 type IterationCallback<T> = (obj: T) => boolean;
