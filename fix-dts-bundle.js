@@ -16,8 +16,17 @@ function main(prefix, inputFile, outputFile = inputFile) {
             return `declare module "${name}"`;
         });
 
+        text = text.replace(/(?<!declare )module ["'](.*?)["']/g, (str, name) => {
+            let newName = changes.get(name);
+            if (newName === undefined)
+                newName = changes.get(name + '/index');
+            if (newName === undefined)
+                return str;
+            return `module "${newName}"`;
+        });
+
         text = text.replace(/((?:import|export) .*? from) ["'](.*?)["']/g, (str, statement, name) => {
-            newName = changes.get(name);
+            let newName = changes.get(name);
             if (newName === undefined)
                 newName = changes.get(name + '/index');
             if (newName === undefined)
