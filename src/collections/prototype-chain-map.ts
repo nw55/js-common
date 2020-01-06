@@ -16,15 +16,33 @@ export class PrototypeChainMap<K, V> {
         this._map.set(key.prototype, value);
     }
 
+    delete(key: ConstructorLike<K>) {
+        return this._map.delete(key.prototype);
+    }
+
+    clear() {
+        this._map.clear();
+    }
+
     find(obj: K, predicate?: (value: V) => boolean) {
         let prototype = Object.getPrototypeOf(obj);
         while (prototype !== null) {
-            let value = this._map.get(prototype);
+            const value = this._map.get(prototype);
             if (value !== undefined && (predicate === undefined || predicate(value)))
                 return value;
             prototype = Object.getPrototypeOf(prototype);
         }
         return undefined;
+    }
+
+    *findAll(obj: K) {
+        let prototype = Object.getPrototypeOf(obj);
+        while (prototype !== null) {
+            const value = this._map.get(prototype);
+            if (value !== undefined)
+                yield value;
+            prototype = Object.getPrototypeOf(prototype);
+        }
     }
 
     values() {
@@ -35,7 +53,11 @@ export class PrototypeChainMap<K, V> {
 export class PrototypeChainMultiMap<K, V> {
     private _map = new MultiMap<object, V>();
 
-    has(key: ConstructorLike<K>) {
+    has(key: ConstructorLike<K>, value: V) {
+        return this._map.has(key.prototype, value);
+    }
+
+    hasAny(key: ConstructorLike<K>) {
         return this._map.hasKey(key.prototype);
     }
 
@@ -45,6 +67,18 @@ export class PrototypeChainMultiMap<K, V> {
 
     add(key: ConstructorLike<K>, value: V) {
         this._map.add(key.prototype, value);
+    }
+
+    delete(key: ConstructorLike<K>, value: V) {
+        return this._map.delete(key.prototype, value);
+    }
+
+    deleteAll(key: ConstructorLike<K>) {
+        return this._map.deleteAll(key.prototype);
+    }
+
+    clear() {
+        this._map.clear();
     }
 
     *find(obj: K) {
