@@ -17,7 +17,8 @@ export class BitArray {
             }
             v >>>= 1;
         }
-        bits[Math.ceil(i / 32) - 1] = v >>> (32 - i % 32 - 1);
+        if (i % 32 !== 0)
+            bits[Math.ceil(i / 32) - 1] = v >>> (32 - i % 32 - 1);
         return new BitArray(length, bits);
     }
 
