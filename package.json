@@ -10,9 +10,11 @@
   "scripts": {
     "build:esm": "tsc -p tsconfig.prod.json --outDir lib",
     "build:cjs": "tsc -p tsconfig.prod.json --outDir dist --module commonjs",
-    "build:dts": "tsc -p tsconfig.prod.json --outFile lib/index.js --declaration --module umd --emitDeclarationOnly && node fix-dts-bundle.js @nw55/common lib/index.d.ts",
-    "build": "npm run build:esm && npm run build:cjs && npm run build:dts",
+    "build:dts": "tsc -p tsconfig.prod.json --outFile lib/index.js --declaration --module umd --emitDeclarationOnly && nw55-fix-dts-bundle @nw55/common lib/index.d.ts",
+    "build": "npm run lint:build && npm run build:esm && npm run build:cjs && npm run build:dts",
     "dev": "tsc --watch",
+    "lint": "eslint . --ext .js,.ts",
+    "lint:build": "eslint . --ext .js,.ts -c eslint-config.js",
     "prepare": "npm run build"
   },
   "files": [
@@ -24,6 +26,11 @@
     "access": "public"
   },
   "devDependencies": {
+    "@nw55/dev-tools": "0.1.0",
+    "@nw55/eslint-config": "0.1.0",
+    "@typescript-eslint/eslint-plugin": "^2.25.0",
+    "@typescript-eslint/parser": "^2.25.0",
+    "eslint": "^6.8.0",
     "typescript": "~3.7.3"
   }
 }
