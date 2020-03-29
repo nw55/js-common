@@ -48,6 +48,8 @@ export class DefaultLifetimeManager<T extends LifetimeObject> implements Lifetim
         for (let obj of this._objects) {
             if (obj.lifetimeActive) {
                 let result = cb(obj);
+                // lifetimeActive might have been changed in cb()
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 if (this._deleteEarly && !obj.lifetimeActive)
                     this._objects.delete(obj);
                 if (!result)

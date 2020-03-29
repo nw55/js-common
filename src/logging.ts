@@ -155,5 +155,5 @@ export class Logger {
     }
 }
 
-// tslint:disable-next-line: variable-name
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const Log = new Logger();

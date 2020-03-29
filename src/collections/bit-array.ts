@@ -7,9 +7,8 @@ export class BitArray {
         let v = 0;
         let i = 0;
         while (i < length) {
-            if (data[i] !== 0) {
+            if (data[i] !== 0)
                 v |= 0x80000000;
-            }
             i++;
             if (i % 32 === 0) {
                 bits[i / 32 - 1] = v;
@@ -34,9 +33,8 @@ export class BitArray {
             let bufferSize = Math.ceil(length / 32);
             data = new Uint32Array(bufferSize);
         }
-        else {
-            if (data.length * 32 < length)
-                throw Log.invalidArgument();
+        else if (data.length * 32 < length) {
+            throw Log.invalidArgument();
         }
 
         this._data = data;

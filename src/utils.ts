@@ -1,5 +1,5 @@
-// tslint:disable-next-line: ban-types
-export type ConstructorLike<T> = Function & { prototype: T };
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type ConstructorLike<T> = Function & { prototype: T; };
 
 export type AnyConstructor<T> = new (...args: any[]) => T;
 
@@ -14,11 +14,11 @@ export function defaultFactory<TResult, TParams extends any[]>(constructor: new 
 }
 
 export function shallowClone<T>(obj: T): T {
-    return Object.assign({}, obj);
+    return { ...obj };
 }
 
 export function overwrite<T>(base: T, values: Partial<T>): T {
-    return Object.assign({}, base, values);
+    return { ...base, ...values };
 }
 
 export class PromiseSource<T = void> {
@@ -68,4 +68,11 @@ export type Mutable<T> = {
 
 export interface CallbackIterable<T> {
     forEach(cb: (value: T) => void): void;
+}
+
+export function getIterableFirstElement<T>(iterable: Iterable<T>): T | undefined {
+    const result = iterable[Symbol.iterator]().next();
+    if (result.done !== true)
+        return result.value;
+    return undefined;
 }

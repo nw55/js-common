@@ -1,6 +1,6 @@
 import { MultiMap } from '../collections/multi-map';
 import { Log } from '../logging';
-import { PromiseSource } from '../utils';
+import { PromiseSource, getIterableFirstElement } from '../utils';
 import { AnyServiceType, ServiceFactoryContext, ServiceInfo, ServiceInitializerInfo, ServiceProvider } from './common';
 import { ServiceCollection } from './service-collection';
 
@@ -47,7 +47,7 @@ class SharedLoadingContext {
     private _dependecyBlocked = new Map<AnyServiceType, AnyServiceType>();
     private _waitingContexts = new MultiMap<AnyServiceType, LoadingContext>();
     private _instances = new Map<AnyServiceType, any>();
-    private _promises = new Map<LoadingContext, Promise<any>>();
+    private _promises = new Map<LoadingContext, Promise<void>>();
 
     constructor(serviceCollection: ServiceCollection<any>, private _externalServices: ServiceProvider<any> | null) {
         for (let service of serviceCollection.services)
@@ -87,7 +87,7 @@ class SharedLoadingContext {
                 }
             }
             if (allBlocked) {
-                let service = this._promises.keys().next().value.type;
+                let service = getIterableFirstElement(this._promises.keys())!.type;
                 let current: AnyServiceType | undefined = service;
                 let services: AnyServiceType[] = [];
                 do {

@@ -130,7 +130,7 @@ export class Rect {
     }
 
     extend(all: number): Rect;
-    extend(x: number, y: number): Rect; // tslint:disable-line: unified-signatures
+    extend(x: number, y: number): Rect; // eslint-disable-line @typescript-eslint/unified-signatures
     extend(left: number, top: number, right: number, bottom: number): Rect;
     extend(left: number, top?: number, right?: number, bottom?: number) {
         if (top === undefined)

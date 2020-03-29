@@ -6,11 +6,11 @@ export class Vector2 {
     static readonly y = new Vector2(0, 1);
     static readonly invalid = new Vector2(NaN, NaN);
 
-    public readonly x: number;
-    public readonly y: number;
+    readonly x: number;
+    readonly y: number;
 
     constructor(a: number);
-    constructor(x: number, y: number); // tslint:disable-line: unified-signatures
+    constructor(x: number, y: number); // eslint-disable-line @typescript-eslint/unified-signatures
     constructor(a: number, b?: number) {
         if (b === undefined) {
             this.x = Math.cos(a);

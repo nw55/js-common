@@ -19,7 +19,7 @@ export interface OperationFilter<TMap, K extends keyof TMap = keyof TMap> {
 }
 
 export interface OperationFilterProvider<TMap> {
-    getOperationFilters(): Iterable<OperationFilter<TMap, keyof TMap>>;
+    getOperationFilters(): Iterable<OperationFilter<TMap>>;
 }
 
 export const operationFilterHostSymbol = Symbol('operationFilterHost');

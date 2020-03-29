@@ -27,9 +27,9 @@ function throwError(message: string): never {
 }
 
 // internal function does not validate arguments
-function encode_utf8_getByteCount(str: string, startIndex: number, length: number): number {
+function getUtf8ByteCount(str: string, startIndex: number, length: number): number {
     let count = 0;
-    let surrogate: number | undefined = undefined;
+    let surrogate: number | undefined;
     for (let i = startIndex; i < startIndex + length; i++) {
         let charCode = str.charCodeAt(i);
         if (surrogate !== undefined) {
@@ -37,8 +37,9 @@ function encode_utf8_getByteCount(str: string, startIndex: number, length: numbe
                 charCode = (((surrogate & UTF16_SURROGATE_VALUE_MASK) << 10) | (charCode & UTF16_SURROGATE_VALUE_MASK)) + UTF16_SURROGATE_VALUE_OFFSET;
                 surrogate = undefined;
             }
-            else
+            else {
                 throwError(ERROR_MISSING_SURROGATE);
+            }
         }
         else if ((charCode & UTF16_LEAD_SURROGATE_IDENTIFIER) === UTF16_LEAD_SURROGATE_IDENTIFIER) {
             surrogate = charCode;
@@ -60,9 +61,9 @@ function encode_utf8_getByteCount(str: string, startIndex: number, length: numbe
 }
 
 // internal function does not validate arguments, returns byte length
-function encode_utf8_getBytes(str: string, startIndex: number, length: number, bytes: Uint8Array, byteOffset: number, maxByteOffset: number): number {
+function encodeUtf8(str: string, startIndex: number, length: number, bytes: Uint8Array, byteOffset: number, maxByteOffset: number): number {
     let pos = byteOffset;
-    let surrogate: number | undefined = undefined;
+    let surrogate: number | undefined;
     for (let i = startIndex; i < startIndex + length; i++) {
         let charCode = str.charCodeAt(i);
         if (surrogate !== undefined) {
@@ -70,8 +71,9 @@ function encode_utf8_getBytes(str: string, startIndex: number, length: number, b
                 charCode = (((surrogate & UTF16_SURROGATE_VALUE_MASK) << 10) | (charCode & UTF16_SURROGATE_VALUE_MASK)) + UTF16_SURROGATE_VALUE_OFFSET;
                 surrogate = undefined;
             }
-            else
+            else {
                 throwError(ERROR_MISSING_SURROGATE);
+            }
         }
         else if ((charCode & UTF16_LEAD_SURROGATE_IDENTIFIER) === UTF16_LEAD_SURROGATE_IDENTIFIER) {
             surrogate = charCode;
@@ -117,7 +119,7 @@ function encode_utf8_getBytes(str: string, startIndex: number, length: number, b
 }
 
 // internal function does not validate arguments
-function decode_utf8_bytes(bytes: Uint8Array, byteOffset: number, byteCount: number): string {
+function decodeUtf8(bytes: Uint8Array, byteOffset: number, byteCount: number): string {
     let result = '';
     let sequenceValue = 0;
     let sequencePartsLeft = 0;
@@ -128,8 +130,9 @@ function decode_utf8_bytes(bytes: Uint8Array, byteOffset: number, byteCount: num
                 sequencePartsLeft--;
                 sequenceValue = sequenceValue << 6 | codePoint & 0x3f;
             }
-            else
+            else {
                 throwError('format: invalid sequence byte');
+            }
             if (sequencePartsLeft > 0)
                 continue;
             codePoint = sequenceValue;
@@ -152,8 +155,9 @@ function decode_utf8_bytes(bytes: Uint8Array, byteOffset: number, byteCount: num
                 sequenceValue = codePoint & 0x7;
                 sequencePartsLeft = 3;
             }
-            else
+            else {
                 throwError('format: sequence too long');
+            }
             continue;
         }
         if (codePoint > UTF8_UPPER_END)
@@ -184,7 +188,7 @@ export namespace utf8 {
         if (isFiniteNonNegativeNumber(length) || length + startIndex > str.length)
             throw Log.invalidArgument();
 
-        return encode_utf8_getByteCount(str, startIndex, length);
+        return getUtf8ByteCount(str, startIndex, length);
     }
 
     export function writeBytes(buffer: Uint8Array, bufferOffset: number, str: string, startIndex = 0, length = str.length - startIndex): number {
@@ -195,7 +199,7 @@ export namespace utf8 {
         if (!isFiniteNonNegativeNumber(length) || length + startIndex > str.length)
             throw Log.invalidArgument();
 
-        let byteLength = encode_utf8_getBytes(str, startIndex, length, buffer, bufferOffset, buffer.length);
+        let byteLength = encodeUtf8(str, startIndex, length, buffer, bufferOffset, buffer.length);
         return byteLength;
     }
 
@@ -205,9 +209,9 @@ export namespace utf8 {
         if (!isFiniteNonNegativeNumber(length) || length + startIndex > str.length)
             throw Log.invalidArgument();
 
-        let byteCount = encode_utf8_getByteCount(str, startIndex, length);
+        let byteCount = getUtf8ByteCount(str, startIndex, length);
         let buffer = new Uint8Array(byteCount);
-        encode_utf8_getBytes(str, startIndex, length, buffer, 0, byteCount);
+        encodeUtf8(str, startIndex, length, buffer, 0, byteCount);
         return buffer;
     }
 
@@ -217,6 +221,6 @@ export namespace utf8 {
         if (!isFiniteNonNegativeNumber(byteCount) || byteCount + byteOffset > bytes.length)
             throw Log.invalidArgument();
 
-        return decode_utf8_bytes(bytes, byteOffset, byteCount);
+        return decodeUtf8(bytes, byteOffset, byteCount);
     }
 }

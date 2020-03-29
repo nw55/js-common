@@ -99,7 +99,7 @@ export class GlobalOperationFilterHost {
 
     hasFilters<TMap, K extends keyof TMap>(instance: OperationFilteringObject<TMap>, operation: K): boolean {
         let instanceHost = instance[operationFilterHostSymbol];
-        if (instanceHost !== null && instanceHost.hasInstanceFilters(operation))
+        if (instanceHost?.hasInstanceFilters(operation) ?? false)
             return true;
         return this.hasTypeFilters(instance, operation);
     }
@@ -115,7 +115,7 @@ export class GlobalOperationFilterHost {
 
 export class OperationFilterHost<TMap> {
     private _operationHandlers = new Map<keyof TMap, FilteredOperationHandler<TMap, keyof TMap>>();
-    private _filters = new Map<OperationFilterProvider<TMap>, OperationFilter<TMap, keyof TMap>[]>();
+    private _filters = new Map<OperationFilterProvider<TMap>, OperationFilter<TMap>[]>();
 
     addFilters(filterProvider: OperationFilterProvider<TMap>) {
         if (this._filters.has(filterProvider)) {
@@ -159,7 +159,7 @@ export class OperationFilterHost<TMap> {
 
     hasInstanceFilters<K extends keyof TMap>(operation: K): boolean {
         let operationHandler = this._operationHandlers.get(operation);
-        return operationHandler !== undefined && operationHandler.hasFilters;
+        return operationHandler?.hasFilters ?? false;
     }
 
     getInstanceFilters<K extends keyof TMap>(operation: K): readonly OperationFilter<TMap, K>[] {

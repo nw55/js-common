@@ -28,7 +28,7 @@ export interface RandomNumberGenerator {
 }
 
 export class XorShiftPlus implements RandomNumberGenerator {
-    private static readonly jump = new Uint32Array([0x635d2dff, 0x8a5cd789, 0x5c472f96, 0x121fd215]);
+    private static readonly _jump = new Uint32Array([0x635d2dff, 0x8a5cd789, 0x5c472f96, 0x121fd215]);
 
     static getRandomSeed(): [number, number, number, number] {
         return [getRandomSeed(), getRandomSeed(), getRandomSeed(), getRandomSeed()];
@@ -89,8 +89,8 @@ export class XorShiftPlus implements RandomNumberGenerator {
         let t1U = (s1U << a1) | ((s1L & m1) >>> (32 - a1));
         let t1L = s1L << a1;
         // :: s1 = s1 ^ t1
-        s1U = s1U ^ t1U;
-        s1L = s1L ^ t1L;
+        s1U ^= t1U;
+        s1L ^= t1L;
 
         // t1 = ( s1 ^ s0 ^ ( s1 >> 18 ) ^ ( s0 >> 5 ) )
         // :: t1 = s1 ^ s0
@@ -102,16 +102,16 @@ export class XorShiftPlus implements RandomNumberGenerator {
         let t2U = s1U >>> a2;
         let t2L = (s1L >>> a2) | ((s1U & m2) << (32 - a2));
         // :: t1 = t1 ^ t2
-        t1U = t1U ^ t2U;
-        t1L = t1L ^ t2L;
+        t1U ^= t2U;
+        t1L ^= t2L;
         // :: t2 = s0 >> 5
         const a3 = 5;
         const m3 = 0xFFFFFFFF >>> (32 - a3);
         t2U = s0U >>> a3;
         t2L = (s0L >>> a3) | ((s0U & m3) << (32 - a3));
         // :: t1 = t1 ^ t2
-        t1U = t1U ^ t2U;
-        t1L = t1L ^ t2L;
+        t1U ^= t2U;
+        t1L ^= t2L;
 
         // s[1] = t1
         this._state[2] = t1U;
@@ -126,7 +126,7 @@ export class XorShiftPlus implements RandomNumberGenerator {
 
         for (let j = 0; j < 4; j++) {
             for (let b = 0; b < 32; b++) {
-                if ((XorShiftPlus.jump[j] & (1 << b)) !== 0) {
+                if ((XorShiftPlus._jump[j] & (1 << b)) !== 0) {
                     for (let i = 0; i < 4; i++)
                         state[i] ^= this._state[i];
                 }

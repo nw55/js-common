@@ -1,12 +1,12 @@
 import { Log } from '../logging';
 import { TypedArray, TypedArrayConstructor, defaultIfUndefined } from '../utils';
 
-type ResizableOptions = {
+interface ResizableOptions {
     size?: number;
     capacity: number;
     growFactor?: number;
     shrinkFactor?: number;
-};
+}
 
 export class Resizable<T extends TypedArray> {
     private _type: TypedArrayConstructor<T>;

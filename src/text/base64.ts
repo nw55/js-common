@@ -149,7 +149,7 @@ export namespace base64 {
         if (startIndex < 0 || length < 0 || startIndex + length > str.length)
             throw Log.invalidArgument();
 
-        let [byteCount, unpaddedLength] = getByteCountAndUnpaddedLength(str, startIndex, length);
+        let [byteCount] = getByteCountAndUnpaddedLength(str, startIndex, length);
 
         let buffer = new Uint8Array(byteCount);
 
