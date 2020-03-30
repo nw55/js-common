@@ -15,7 +15,8 @@
     "dev": "tsc --watch",
     "lint": "eslint . --ext .js,.ts",
     "lint:build": "eslint . --ext .js,.ts -c eslint-config.js",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "ci": "npm run build"
   },
   "files": [
     "/dist",
