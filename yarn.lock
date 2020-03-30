@@ -23,10 +23,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@nw55/dev-tools@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@nw55/dev-tools/-/dev-tools-0.1.0.tgz#f907389a28d0075e2e6d465707e733c8fd1b492b"
-  integrity sha512-gj3Yfg6hpMnnbQonD+y0NuO9RqxYqXeBtgrO5JRb/rXtRUvSeppUrtZa/hGdBe9RDRXL39J1yUghBfWhep4J4w==
+"@nw55/dev-tools@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@nw55/dev-tools/-/dev-tools-0.1.1.tgz#c5b7ba1b3f4694d8de7d213de2f6ff52a9424838"
+  integrity sha512-bLqJNXapPUq2xuEU7i6KlHUjYil26aZtsxr6Q/M9OvlOEXYLu+aIEqrChyMsXAdSW5UfW9zP5qXYrqksQqInEQ==
 
 "@nw55/eslint-config@0.1.0":
   version "0.1.0"
