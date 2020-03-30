@@ -2,11 +2,15 @@
   "name": "@nw55/common",
   "description": "NW55 Common JS/TS Library",
   "version": "0.1.4",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nw55/js-common.git"
+  },
+  "author": "Niklas Werner (nw55) <nw55@outlook.com>",
+  "license": "MIT",
   "main": "dist/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
-  "author": "Niklas Werner (nw55) <nw55@outlook.com>",
-  "license": "MIT",
   "scripts": {
     "build:esm": "tsc -p tsconfig.prod.json --outDir lib",
     "build:cjs": "tsc -p tsconfig.prod.json --outDir dist --module commonjs",
@@ -15,7 +19,7 @@
     "dev": "tsc --watch",
     "lint": "eslint . --ext .js,.ts",
     "lint:build": "eslint . --ext .js,.ts -c eslint-config.js",
-    "prepare": "npm run build",
+    "prepublishOnly": "npm run build",
     "ci": "npm run build"
   },
   "files": [
