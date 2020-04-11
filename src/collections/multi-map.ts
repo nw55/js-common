@@ -31,7 +31,10 @@ export class MultiMap<K, V> {
     }
 
     hasKey(key: K) {
-        return this._map.has(key);
+        const inner = this._map.get(key);
+        if (inner === undefined)
+            return false;
+        return inner.size > 0;
     }
 
     has(key: K, value: V) {

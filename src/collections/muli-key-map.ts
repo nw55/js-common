@@ -9,7 +9,10 @@ export class MultiKeyMap<K1, K2, V> {
     }
 
     hasAny(key1: K1) {
-        return this._map.has(key1);
+        const inner = this._map.get(key1);
+        if (inner === undefined)
+            return false;
+        return inner.size > 0;
     }
 
     has(key1: K1, key2: K2) {
