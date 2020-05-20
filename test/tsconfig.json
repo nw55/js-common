@@ -1,0 +1,16 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "module": "commonjs",
+        "rootDir": "..",
+        "baseUrl": ".",
+        "paths": {
+            "@nw55/common": [
+                "../src/index.ts"
+            ]
+        }
+    },
+    "include": [
+        "."
+    ]
+}

@@ -21,9 +21,16 @@ module.exports = {
         extends: ['@nw55/eslint-config/build/es'],
         rules: commonOverrideRules
     }, {
-        files: ['*.ts'],
+        files: ['src/**/*.ts'],
         parserOptions: {
             project: './tsconfig.json'
+        },
+        extends: ['@nw55/eslint-config/build/ts-typecheck'],
+        rules: commonOverrideRules
+    }, {
+        files: ['test/**/*.ts'],
+        parserOptions: {
+            project: './test/tsconfig.json'
         },
         extends: ['@nw55/eslint-config/build/ts-typecheck'],
         rules: commonOverrideRules
