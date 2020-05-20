@@ -1,7 +1,7 @@
 import { MultiKeyMap, MultiKeySet } from '../collections';
 import { Log } from '../logging';
 import { ConstructorLike } from '../utils';
-import { OperationFilter, OperationFilterContextTypeMap, OperationFilterProvider, OperationFilteringObject, operationFilterHostSymbol } from './common';
+import { OperationFilter, OperationFilterContextTypeMap, operationFilterHostSymbol, OperationFilteringObject, OperationFilterProvider } from './common';
 
 function compareFiltersByOrder(a: OperationFilter<any>, b: OperationFilter<any>) {
     return b.order - a.order;

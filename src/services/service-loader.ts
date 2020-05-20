@@ -1,6 +1,6 @@
 import { MultiMap } from '../collections/multi-map';
 import { Log } from '../logging';
-import { PromiseSource, getIterableFirstElement } from '../utils';
+import { getIterableFirstElement, PromiseSource } from '../utils';
 import { AnyServiceType, ServiceFactoryContext, ServiceInfo, ServiceInitializerInfo, ServiceProvider } from './common';
 import { ServiceCollection } from './service-collection';
 

@@ -1,5 +1,5 @@
 import { Log } from '../logging';
-import { TypedArray, TypedArrayConstructor, defaultIfUndefined } from '../utils';
+import { defaultIfUndefined, TypedArray, TypedArrayConstructor } from '../utils';
 
 interface ResizableOptions {
     size?: number;

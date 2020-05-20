@@ -1,7 +1,18 @@
 {
-    "extends": "./tsconfig.prod.json",
     "compilerOptions": {
-        "outDir": "out",
-        "composite": true
-    }
+        "target": "es2017",
+        "module": "es2015",
+        "moduleResolution": "node",
+        "strict": true,
+        "sourceMap": true,
+        "lib": [
+            "es2017"
+        ],
+        "outDir": "./lib",
+        "types": [],
+        "rootDir": "./src"
+    },
+    "include": [
+        "src"
+    ]
 }
