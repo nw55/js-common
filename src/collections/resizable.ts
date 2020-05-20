@@ -43,7 +43,7 @@ export class Resizable<T extends TypedArray> {
                 let newCapacity = this._data.length;
                 while (newCapacity < size)
                     newCapacity = Math.round(newCapacity * this._growFactor);
-                let newData = new this._type(newCapacity);
+                const newData = new this._type(newCapacity);
                 newData.set(this._data);
                 this._data = newData;
             }
@@ -72,7 +72,7 @@ export class Resizable<T extends TypedArray> {
     }
 
     appendValue(value: number) {
-        let index = this.size++;
+        const index = this.size++;
         this._data[index] = value;
     }
 

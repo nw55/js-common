@@ -3,7 +3,7 @@ import { TypedArray } from '../utils';
 
 export class BitArray {
     static nonemptyEntries(data: TypedArray, length = data.length) {
-        let bits = new Uint32Array(Math.ceil(length / 32));
+        const bits = new Uint32Array(Math.ceil(length / 32));
         let v = 0;
         let i = 0;
         while (i < length) {
@@ -30,7 +30,7 @@ export class BitArray {
             throw Log.invalidArgument();
 
         if (data === undefined) {
-            let bufferSize = Math.ceil(length / 32);
+            const bufferSize = Math.ceil(length / 32);
             data = new Uint32Array(bufferSize);
         }
         else if (data.length * 32 < length) {
@@ -72,8 +72,8 @@ export class BitArray {
     }
 
     clone() {
-        let bufferSize = Math.ceil(this._length / 32);
-        let newData = new Uint32Array(bufferSize);
+        const bufferSize = Math.ceil(this._length / 32);
+        const newData = new Uint32Array(bufferSize);
         newData.set(this._data);
         return new BitArray(this._length, newData);
     }

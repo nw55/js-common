@@ -18,8 +18,6 @@ export class Rect {
     private _right = 0;
     private _bottom = 0;
 
-    // TODO PERF: consider using static functions instead of overloads to reduce overhead
-    // TODO PERF: (Vector2, Vector2) overload seems unnecessarily complicated
     constructor(left: number, top: number, right: number, bottom: number);
     constructor(pos: Vector2, width: number, height: number);
     constructor(p1: Vector2, p2: Vector2);
@@ -196,10 +194,10 @@ export class Rect {
     }
 
     intersection(rect: Rect) {
-        let left = Math.max(this._left, rect._left);
-        let top = Math.max(this._top, rect._top);
-        let right = Math.min(this._right, rect._right);
-        let bottom = Math.min(this._bottom, rect._bottom);
+        const left = Math.max(this._left, rect._left);
+        const top = Math.max(this._top, rect._top);
+        const right = Math.min(this._right, rect._right);
+        const bottom = Math.min(this._bottom, rect._bottom);
         if (left >= right || top >= bottom)
             return Rect.zero;
         return new Rect(left, top, right, bottom);
@@ -207,12 +205,12 @@ export class Rect {
 
     // always returns false if one rect is empty
     intersects(rect: Rect) {
-        let left = Math.max(this._left, rect._left);
-        let right = Math.min(this._right, rect._right);
+        const left = Math.max(this._left, rect._left);
+        const right = Math.min(this._right, rect._right);
         if (left >= right)
             return false;
-        let top = Math.max(this._top, rect._top);
-        let bottom = Math.min(this._bottom, rect._bottom);
+        const top = Math.max(this._top, rect._top);
+        const bottom = Math.min(this._bottom, rect._bottom);
         if (top >= bottom)
             return false;
         return true;
@@ -238,11 +236,25 @@ export class Rect {
         );
     }
 
-    // TODO PERF manual inline for less allocations
     transform(transform: SimpleTransform | null, inverse = false) {
         if (transform === null)
             return this;
-        return new Rect(this.topLeft.transform(transform, inverse), this.bottomRight.transform(transform, inverse));
+        if (inverse) {
+            return new Rect(
+                (this._left - transform.originOffset.x) / transform.scale,
+                (this._top - transform.originOffset.y) / transform.scale,
+                (this._right - transform.originOffset.x) / transform.scale,
+                (this._bottom - transform.originOffset.y) / transform.scale
+            );
+        }
+        else {
+            return new Rect(
+                this._left * transform.scale + transform.originOffset.x,
+                this._top * transform.scale + transform.originOffset.y,
+                this._right * transform.scale + transform.originOffset.x,
+                this._bottom * transform.scale + transform.originOffset.y
+            );
+        }
     }
 
     excatEquals(other: Rect) {

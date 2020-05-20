@@ -30,7 +30,7 @@ export class Queue<T = any> {
     get next() {
         if (this._count >= this._capacity)
             return undefined;
-        let index = (this._writeIndex - this._count + this._capacity) % this._capacity;
+        const index = (this._writeIndex - this._count + this._capacity) % this._capacity;
         return this._elements[index];
     }
 
@@ -49,14 +49,14 @@ export class Queue<T = any> {
     dequeue() {
         if (this._count === 0)
             return undefined;
-        let index = (this._writeIndex - this._count + this._capacity) % this._capacity;
+        const index = (this._writeIndex - this._count + this._capacity) % this._capacity;
         this._count--;
         return this._elements[index];
     }
 
     *[Symbol.iterator]() {
         for (let c = this._count; c > 0; c--) {
-            let i = (this._writeIndex - c + this._capacity) % this._capacity;
+            const i = (this._writeIndex - c + this._capacity) % this._capacity;
             yield this._elements[i];
         }
     }

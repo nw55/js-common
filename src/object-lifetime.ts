@@ -34,8 +34,8 @@ export class DefaultLifetimeManager<T extends LifetimeObject> implements Lifetim
     }
 
     forEachObject(cb: IterationCallback<T>, removeDead = false) {
-        for (let obj of this._objects) {
-            let result = cb(obj);
+        for (const obj of this._objects) {
+            const result = cb(obj);
             if (removeDead && !obj.lifetimeActive)
                 this._objects.delete(obj);
             if (!result)
@@ -45,9 +45,9 @@ export class DefaultLifetimeManager<T extends LifetimeObject> implements Lifetim
     }
 
     forEachLiveObject(cb: IterationCallback<T>) {
-        for (let obj of this._objects) {
+        for (const obj of this._objects) {
             if (obj.lifetimeActive) {
-                let result = cb(obj);
+                const result = cb(obj);
                 // lifetimeActive might have been changed in cb()
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 if (this._deleteEarly && !obj.lifetimeActive)

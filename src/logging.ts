@@ -57,9 +57,9 @@ export class Logger {
     }
 
     private _fromStandardError(errorLevel: ErrorLevel | undefined, errorType: StandardErrorType, message: string, details?: any) {
-        let error = new errorType(message);
+        const error = new errorType(message);
         if (this._logWriter !== null) {
-            let level = errorLevel === 'warning' ? LogLevel.Warning : errorLevel === 'error' ? LogLevel.Error : LogLevel.Fatal;
+            const level = errorLevel === 'warning' ? LogLevel.Warning : errorLevel === 'error' ? LogLevel.Error : LogLevel.Fatal;
             this._logWriter.log({
                 level,
                 message,
@@ -102,7 +102,7 @@ export class Logger {
     }
 
     private _fromErrorMessage(level: LogLevel, message: string, details?: any) {
-        let error = new Error(message);
+        const error = new Error(message);
         if (this._logWriter !== null) {
             this._logWriter.log({
                 level,

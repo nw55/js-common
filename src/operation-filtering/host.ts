@@ -13,7 +13,7 @@ const emptyList: readonly any[] = [];
 
 export class GlobalOperationFilterHost {
     private _typeFilterProviders = new MultiKeyMap<object, OperationFilterProvider<any>, OperationFilter<any>[]>();
-    private _typeFilters = new MultiKeyMap<object, PropertyKey, Set<OperationFilter<any>>>(); // TODO could use MultiKeyMultiMap here if it existed
+    private _typeFilters = new MultiKeyMap<object, PropertyKey, Set<OperationFilter<any>>>();
     private _typeFilterLists = new MultiKeyMap<object, PropertyKey, OperationFilter<any>[]>();
     private _cleanTypes = new MultiKeySet<object, PropertyKey>();
     private _version = 0;
@@ -23,17 +23,17 @@ export class GlobalOperationFilterHost {
     }
 
     addTypeFilters<T>(type: ConstructorLike<T>, filterProvider: OperationFilterProvider<MapFromObject<T>>) {
-        let prototype = type.prototype;
+        const prototype = type.prototype;
 
         if (this._typeFilterProviders.has(prototype, filterProvider)) {
             Log.invalidArgument('warning', 'duplicate filter provider for type', { type, filterProvider });
             return;
         }
 
-        let filters = [...filterProvider.getOperationFilters()];
+        const filters = [...filterProvider.getOperationFilters()];
         this._typeFilterProviders.set(prototype, filterProvider, filters);
 
-        for (let filter of filters) {
+        for (const filter of filters) {
             let set = this._typeFilters.get(prototype, filter.operation);
             if (set === undefined) {
                 set = new Set();
@@ -47,9 +47,9 @@ export class GlobalOperationFilterHost {
     }
 
     removeTypeFilters<T extends OperationFilteringObject<TMap>, TMap>(type: ConstructorLike<T>, filterProvider: OperationFilterProvider<TMap>) {
-        let prototype = type.prototype;
+        const prototype = type.prototype;
 
-        let filters = this._typeFilterProviders.get(prototype, filterProvider);
+        const filters = this._typeFilterProviders.get(prototype, filterProvider);
 
         if (filters === undefined) {
             Log.invalidArgument('warning', 'missing filter provider for type', { type, filterProvider });
@@ -58,8 +58,8 @@ export class GlobalOperationFilterHost {
 
         this._typeFilterProviders.delete(prototype, filterProvider);
 
-        for (let filter of filters) {
-            let set = this._typeFilters.get(prototype, filter.operation)!;
+        for (const filter of filters) {
+            const set = this._typeFilters.get(prototype, filter.operation)!;
             set.delete(filter);
             if (set.size === 0)
                 this._typeFilters.delete(prototype, filter.operation);
@@ -70,17 +70,17 @@ export class GlobalOperationFilterHost {
     }
 
     private _getTypeFilters<TMap, K extends keyof TMap>(instance: OperationFilteringObject<TMap>, operation: K): readonly OperationFilter<TMap, K>[] {
-        let prototype = Object.getPrototypeOf(instance);
+        const prototype = Object.getPrototypeOf(instance);
 
         if (this._cleanTypes.has(prototype, operation))
             return this._typeFilterLists.get(prototype, operation) as OperationFilter<TMap, K>[];
 
-        let list = [];
+        const list = [];
         let currentPrototype = prototype;
         while (currentPrototype !== null) {
-            let filters = this._typeFilters.get(currentPrototype, operation);
+            const filters = this._typeFilters.get(currentPrototype, operation);
             if (filters !== undefined) {
-                for (let filter of filters)
+                for (const filter of filters)
                     list.push(filter);
             }
             currentPrototype = Object.getPrototypeOf(currentPrototype);
@@ -98,16 +98,16 @@ export class GlobalOperationFilterHost {
     }
 
     hasFilters<TMap, K extends keyof TMap>(instance: OperationFilteringObject<TMap>, operation: K): boolean {
-        let instanceHost = instance[operationFilterHostSymbol];
+        const instanceHost = instance[operationFilterHostSymbol];
         if (instanceHost?.hasInstanceFilters(operation) ?? false)
             return true;
         return this.hasTypeFilters(instance, operation);
     }
 
     process<TMap, K extends keyof TMap>(instance: OperationFilteringObject<TMap>, operation: K, context: OperationFilterContextTypeMap<TMap>[K]) {
-        let instanceHost = instance[operationFilterHostSymbol];
-        let instanceFilters = instanceHost === null ? emptyList : instanceHost.getInstanceFilters(operation);
-        let typeFilters = this._getTypeFilters(instance, operation);
+        const instanceHost = instance[operationFilterHostSymbol];
+        const instanceFilters = instanceHost === null ? emptyList : instanceHost.getInstanceFilters(operation);
+        const typeFilters = this._getTypeFilters(instance, operation);
         FilteredOperationHandler.processCombined<TMap, TMap, K>(instanceFilters, typeFilters, context);
         context.finalize();
     }
@@ -123,10 +123,10 @@ export class OperationFilterHost<TMap> {
             return;
         }
 
-        let filters = [...filterProvider.getOperationFilters()];
+        const filters = [...filterProvider.getOperationFilters()];
         this._filters.set(filterProvider, filters);
 
-        for (let filter of filters) {
+        for (const filter of filters) {
             let operationHandler = this._operationHandlers.get(filter.operation);
             if (operationHandler === undefined) {
                 operationHandler = new FilteredOperationHandler();
@@ -137,7 +137,7 @@ export class OperationFilterHost<TMap> {
     }
 
     removeFilters(filterProvider: OperationFilterProvider<TMap>) {
-        let filters = this._filters.get(filterProvider);
+        const filters = this._filters.get(filterProvider);
 
         if (filters === undefined) {
             Log.invalidArgument('warning', 'missing filter provider', { filterProvider });
@@ -146,8 +146,8 @@ export class OperationFilterHost<TMap> {
 
         this._filters.delete(filterProvider);
 
-        for (let filter of filters) {
-            let operationHandler = this._operationHandlers.get(filter.operation);
+        for (const filter of filters) {
+            const operationHandler = this._operationHandlers.get(filter.operation);
             if (operationHandler !== undefined)
                 operationHandler.removeFilter(filter);
         }
@@ -158,12 +158,12 @@ export class OperationFilterHost<TMap> {
     }
 
     hasInstanceFilters<K extends keyof TMap>(operation: K): boolean {
-        let operationHandler = this._operationHandlers.get(operation);
+        const operationHandler = this._operationHandlers.get(operation);
         return operationHandler?.hasFilters ?? false;
     }
 
     getInstanceFilters<K extends keyof TMap>(operation: K): readonly OperationFilter<TMap, K>[] {
-        let operationHandler = this._operationHandlers.get(operation);
+        const operationHandler = this._operationHandlers.get(operation);
         if (operationHandler === undefined)
             return emptyList;
         return (operationHandler as FilteredOperationHandler<TMap, K>).getFilters();
@@ -210,7 +210,7 @@ class FilteredOperationHandler<TMap, K extends keyof TMap> {
     }
 
     addFilter(filter: OperationFilter<TMap, K>) {
-        let order = filter.order;
+        const order = filter.order;
         for (let i = 0; i < this._filters.length; i++) {
             if (this._filters[i].order > order) {
                 this._filters.splice(i, 0, filter);
@@ -221,7 +221,7 @@ class FilteredOperationHandler<TMap, K extends keyof TMap> {
     }
 
     removeFilter(filter: OperationFilter<TMap, K>) {
-        let index = this._filters.indexOf(filter);
+        const index = this._filters.indexOf(filter);
         this._filters.splice(index, 1);
     }
 

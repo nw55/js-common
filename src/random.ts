@@ -39,7 +39,7 @@ export class XorShiftPlus implements RandomNumberGenerator {
     }
 
     static create(seed0: number, seed1 = 0, seed2 = 0, seed3 = 0) {
-        let state = new Uint32Array(4);
+        const state = new Uint32Array(4);
         state[0] = seed0 ^ seedBase0;
         state[1] = seed1 ^ seedBase1;
         state[2] = seed2 ^ seedBase2;
@@ -61,7 +61,7 @@ export class XorShiftPlus implements RandomNumberGenerator {
     }
 
     clone() {
-        let state = this._state.slice(0);
+        const state = this._state.slice(0);
         return new XorShiftPlus(state);
     }
 
@@ -70,13 +70,13 @@ export class XorShiftPlus implements RandomNumberGenerator {
         let s1U = this._state[0];
         let s1L = this._state[1];
         // uint64_t s0 = s[1]
-        let s0U = this._state[2];
-        let s0L = this._state[3];
+        const s0U = this._state[2];
+        const s0L = this._state[3];
 
         // result = s0 + s1
-        let sumL = (s0L >>> 0) + (s1L >>> 0);
-        let resU = (s0U + s1U + (sumL / 2 >>> 31)) >>> 0;
-        let resL = sumL >>> 0;
+        const sumL = (s0L >>> 0) + (s1L >>> 0);
+        const resU = (s0U + s1U + (sumL / 2 >>> 31)) >>> 0;
+        const resL = sumL >>> 0;
 
         // s[0] = s0
         this._state[0] = s0U;
@@ -122,7 +122,7 @@ export class XorShiftPlus implements RandomNumberGenerator {
     }
 
     jump() {
-        let state = new Uint32Array(4);
+        const state = new Uint32Array(4);
 
         for (let j = 0; j < 4; j++) {
             for (let b = 0; b < 32; b++) {
@@ -139,7 +139,7 @@ export class XorShiftPlus implements RandomNumberGenerator {
 
     // between 0 (inclusive) and 1 (exclusive)
     nextFloat() {
-        let [u, l] = this.nextInt64();
+        const [u, l] = this.nextInt64();
         // Math.pow(2, -32) = 2.3283064365386963e-10
         // Math.pow(2, -52) = 2.220446049250313e-16
         return u * 2.3283064365386963e-10 + (l >>> 12) * 2.220446049250313e-16;

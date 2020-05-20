@@ -100,22 +100,25 @@ export class Vector2 {
         return this.x * v.y - this.y * v.x;
     }
 
-    // TODO PERF optimize (directly calculate new x, y without calculating old angle)
     rotateBy(a: number) {
-        let len = this.length;
-        return new Vector2(Math.cos(this.angle + a) * len, Math.sin(this.angle + a) * len);
+        const cos = Math.cos(a);
+        const sin = Math.sin(a);
+        return new Vector2(
+            cos * this.x - sin * this.y,
+            sin * this.x + cos * this.y
+        );
     }
 
     transform(transform: SimpleTransform | null, inverse = false) {
         if (transform === null)
             return this;
-        if (inverse) { // "screen to virtual"
+        if (inverse) {
             return new Vector2(
                 (this.x - transform.originOffset.x) / transform.scale,
                 (this.y - transform.originOffset.y) / transform.scale
             );
         }
-        else { // "virtual to screen"
+        else {
             return new Vector2(
                 this.x * transform.scale + transform.originOffset.x,
                 this.y * transform.scale + transform.originOffset.y

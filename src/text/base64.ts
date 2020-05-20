@@ -39,11 +39,11 @@ export namespace base64 {
             throw Log.invalidArgument();
 
         let pos = byteOffset;
-        let end = byteOffset + byteCount;
+        const end = byteOffset + byteCount;
         let result = '';
 
         while (pos + 3 <= end) {
-            let value = bytes[pos++] << 16 | bytes[pos++] << 8 | bytes[pos++];
+            const value = bytes[pos++] << 16 | bytes[pos++] << 8 | bytes[pos++];
             result += ALPHABET[value >> 18] +
                 ALPHABET[(value >> 12) & 0x3f] +
                 ALPHABET[(value >> 6) & 0x3f] +
@@ -51,7 +51,7 @@ export namespace base64 {
         }
 
         if (end - pos === 2) {
-            let value = bytes[pos++] << 16 | bytes[pos++] << 8;
+            const value = bytes[pos++] << 16 | bytes[pos++] << 8;
             result += ALPHABET[value >> 18] +
                 ALPHABET[(value >> 12) & 0x3f] +
                 ALPHABET[(value >> 6) & 0x3f];
@@ -59,7 +59,7 @@ export namespace base64 {
                 result += PAD;
         }
         else if (end - pos === 1) {
-            let value = bytes[pos++] << 16;
+            const value = bytes[pos++] << 16;
             result += ALPHABET[value >> 18] +
                 ALPHABET[(value >> 12) & 0x3f];
             if (pad)
@@ -70,7 +70,7 @@ export namespace base64 {
     }
 
     function getByteCountAndUnpaddedLength(str: string, startIndex: number, length: number): [number, number] {
-        let rem = length % 4;
+        const rem = length % 4;
         let byteCount = (length - rem) / 4 * 3;
         let unpaddedLength = length;
 
@@ -101,17 +101,17 @@ export namespace base64 {
     }
 
     function decode(buffer: Uint8Array, bufferOffset: number, str: string, startIndex: number, length: number): number {
-        let [byteCount, unpaddedLength] = getByteCountAndUnpaddedLength(str, startIndex, length);
+        const [byteCount, unpaddedLength] = getByteCountAndUnpaddedLength(str, startIndex, length);
 
         if (bufferOffset + byteCount > buffer.length)
             throw Log.invalidArgument('fatal', 'buffer too small');
 
         let pos = startIndex;
-        let end = startIndex + unpaddedLength;
+        const end = startIndex + unpaddedLength;
         let bufferPos = bufferOffset;
 
         while (pos + 4 <= end) {
-            let value = getValue(str.charCodeAt(pos++)) << 18
+            const value = getValue(str.charCodeAt(pos++)) << 18
                 | getValue(str.charCodeAt(pos++)) << 12
                 | getValue(str.charCodeAt(pos++)) << 6
                 | getValue(str.charCodeAt(pos++));
@@ -121,14 +121,14 @@ export namespace base64 {
         }
 
         if (end - pos === 3) {
-            let value = getValue(str.charCodeAt(pos++)) << 18
+            const value = getValue(str.charCodeAt(pos++)) << 18
                 | getValue(str.charCodeAt(pos++)) << 12
                 | getValue(str.charCodeAt(pos++)) << 6;
             buffer[bufferPos++] = value >> 16;
             buffer[bufferPos++] = (value >> 8) & 0xff;
         }
         else if (end - pos === 2) {
-            let value = getValue(str.charCodeAt(pos++)) << 18
+            const value = getValue(str.charCodeAt(pos++)) << 18
                 | getValue(str.charCodeAt(pos++)) << 12;
             buffer[bufferPos++] = value >> 16;
         }
@@ -149,9 +149,9 @@ export namespace base64 {
         if (startIndex < 0 || length < 0 || startIndex + length > str.length)
             throw Log.invalidArgument();
 
-        let [byteCount] = getByteCountAndUnpaddedLength(str, startIndex, length);
+        const [byteCount] = getByteCountAndUnpaddedLength(str, startIndex, length);
 
-        let buffer = new Uint8Array(byteCount);
+        const buffer = new Uint8Array(byteCount);
 
         decode(buffer, 0, str, startIndex, length);
 

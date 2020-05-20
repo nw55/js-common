@@ -170,8 +170,8 @@ function decodeUtf8(bytes: Uint8Array, byteOffset: number, byteCount: number): s
         else {
             // surrogate pair required
             codePoint -= UTF16_SURROGATE_VALUE_OFFSET;
-            let leadSurrogate = UTF16_LEAD_SURROGATE_IDENTIFIER | (codePoint & UTF16_LEAD_SURROGATE_MASK) >>> 10;
-            let trailSurrogate = UTF16_TRAIL_SURROGATE_IDENTIFIER | codePoint & UTF16_TRAIL_SURROGATE_MASK;
+            const leadSurrogate = UTF16_LEAD_SURROGATE_IDENTIFIER | (codePoint & UTF16_LEAD_SURROGATE_MASK) >>> 10;
+            const trailSurrogate = UTF16_TRAIL_SURROGATE_IDENTIFIER | codePoint & UTF16_TRAIL_SURROGATE_MASK;
             result += String.fromCharCode(leadSurrogate);
             result += String.fromCharCode(trailSurrogate);
         }
@@ -199,7 +199,7 @@ export namespace utf8 {
         if (!isFiniteNonNegativeNumber(length) || length + startIndex > str.length)
             throw Log.invalidArgument();
 
-        let byteLength = encodeUtf8(str, startIndex, length, buffer, bufferOffset, buffer.length);
+        const byteLength = encodeUtf8(str, startIndex, length, buffer, bufferOffset, buffer.length);
         return byteLength;
     }
 
@@ -209,8 +209,8 @@ export namespace utf8 {
         if (!isFiniteNonNegativeNumber(length) || length + startIndex > str.length)
             throw Log.invalidArgument();
 
-        let byteCount = getUtf8ByteCount(str, startIndex, length);
-        let buffer = new Uint8Array(byteCount);
+        const byteCount = getUtf8ByteCount(str, startIndex, length);
+        const buffer = new Uint8Array(byteCount);
         encodeUtf8(str, startIndex, length, buffer, 0, byteCount);
         return buffer;
     }

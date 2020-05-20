@@ -14,7 +14,7 @@ module.exports = {
             es2020: true
         },
         extends: [
-            '@nw55/eslint-config/dev/es'
+            '@nw55/eslint-config/build/es'
         ],
         rules: {
             'no-warning-comments': 'off'
@@ -25,11 +25,10 @@ module.exports = {
             project: './tsconfig.prod.json'
         },
         extends: [
-            '@nw55/eslint-config/dev/ts-typecheck'
+            '@nw55/eslint-config/build/ts-typecheck'
         ],
         rules: {
-            'no-warning-comments': 'off',
-            'prefer-const': 'off'
+            'no-warning-comments': 'off'
         }
     }]
 };

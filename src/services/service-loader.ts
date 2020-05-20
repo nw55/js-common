@@ -18,7 +18,7 @@ export class ServiceLoader<TMap, TExternalMap = unknown> {
             throw Log.fail('invalid state');
         this._loading = true;
 
-        let sharedContext = new SharedLoadingContext(this._serviceCollection, externalServices);
+        const sharedContext = new SharedLoadingContext(this._serviceCollection, externalServices);
 
         sharedContext.beginLoad();
 
@@ -50,22 +50,22 @@ class SharedLoadingContext {
     private _promises = new Map<LoadingContext, Promise<void>>();
 
     constructor(serviceCollection: ServiceCollection<any>, private _externalServices: ServiceProvider<any> | null) {
-        for (let service of serviceCollection.services)
+        for (const service of serviceCollection.services)
             this._services.set(service.type, service);
-        for (let initializer of serviceCollection.initializers)
+        for (const initializer of serviceCollection.initializers)
             this._initializers.add(initializer.type, initializer);
     }
 
     beginLoad() {
-        for (let serviceType of this._initializers.keys()) {
+        for (const serviceType of this._initializers.keys()) {
             if (!this._services.has(serviceType))
                 Log.warn('service initializer present without service', { serviceType });
         }
 
-        for (let service of this._services.values()) {
-            let initializers = this._initializers.get(service.type);
-            let context = new LoadingContext(this, service, initializers);
-            let promise = context.load();
+        for (const service of this._services.values()) {
+            const initializers = this._initializers.get(service.type);
+            const context = new LoadingContext(this, service, initializers);
+            const promise = context.load();
             this._promises.set(context, promise);
         }
     }
@@ -80,16 +80,16 @@ class SharedLoadingContext {
     private _detectCircularDependency() {
         if (this._promises.size > 0) {
             let allBlocked = true;
-            for (let loader of this._promises.keys()) {
+            for (const loader of this._promises.keys()) {
                 if (!this._dependecyBlocked.has(loader.type)) {
                     allBlocked = false;
                     break;
                 }
             }
             if (allBlocked) {
-                let service = getIterableFirstElement(this._promises.keys())!.type;
+                const service = getIterableFirstElement(this._promises.keys())!.type;
                 let current: AnyServiceType | undefined = service;
-                let services: AnyServiceType[] = [];
+                const services: AnyServiceType[] = [];
                 do {
                     services.push(current!);
                     current = this._dependecyBlocked.get(current!);
@@ -120,7 +120,7 @@ class SharedLoadingContext {
     provide(context: LoadingContext, instance: any) {
         this._promises.delete(context);
         this._instances.set(context.type, instance);
-        for (let waitingContext of this._waitingContexts.get(context.type)) {
+        for (const waitingContext of this._waitingContexts.get(context.type)) {
             this._dependecyBlocked.delete(waitingContext.type);
             waitingContext.dependencyResolved(instance);
         }
@@ -146,8 +146,8 @@ class LoadingContext implements ServiceFactoryContext<any> {
     }
 
     async load() {
-        let instance = await this._service.factory(this);
-        for (let initializer of this._initializers)
+        const instance = await this._service.factory(this);
+        for (const initializer of this._initializers)
             await initializer.initializer(instance, this);
         this._sharedContext.provide(this, instance);
     }
@@ -160,7 +160,7 @@ class LoadingContext implements ServiceFactoryContext<any> {
     }
 
     requireService(type: AnyServiceType) {
-        let instance = this._sharedContext.require(this, type);
+        const instance = this._sharedContext.require(this, type);
         if (instance !== null)
             return Promise.resolve(instance);
         this._currentRequire = new PromiseSource();
@@ -173,7 +173,7 @@ class ServiceProviderImpl implements ServiceProvider<any> {
     }
 
     getService(type: AnyServiceType) {
-        let instance = this._instances.get(type);
+        const instance = this._instances.get(type);
         if (instance === undefined)
             return null;
         return instance;
@@ -184,7 +184,7 @@ class ServiceProviderImpl implements ServiceProvider<any> {
     }
 
     requireService(type: AnyServiceType) {
-        let instance = this._instances.get(type);
+        const instance = this._instances.get(type);
         if (instance === undefined)
             throw Log.fail('service not found', type);
         return instance;

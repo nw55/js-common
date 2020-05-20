@@ -11,8 +11,8 @@ type DefaultServiceConstructor<TMap, T, TDependncies extends ServiceDependency<T
 
 function defaultServiceFactor<TMap, T, TDependncies extends ServiceDependency<TMap>[]>(constructor: DefaultServiceConstructor<TMap, T, TDependncies>, dependencies: TDependncies): ServiceFactory<TMap, T> {
     return async context => {
-        let resolvedDependencies = [];
-        for (let dependency of dependencies)
+        const resolvedDependencies = [];
+        for (const dependency of dependencies)
             resolvedDependencies.push(await context.requireService(dependency as any));
         return new constructor(...resolvedDependencies as any);
     };
